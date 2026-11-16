@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DesculpaGPT — Gerador de Desculpas Convincentes</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Cabeçalho -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-badge">🛡️</div>
+        <div class="brand-text">
+          <h1>Desculpa<span>GPT</span></h1>
+          <p>Inteligência Artificial Tática para Sobrevivência Social</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnHistory" class="btn-secondary" title="Ver histórico de desculpas">
+          📜 Histórico
+        </button>
+        <button id="btnPanic" class="btn-panic" title="Gera uma desculpa urgente em 1 segundo">
+          🚨 BOTÃO DE PÂNICO
+        </button>
+      </div>
+    </header>
+
+    <!-- Grid Principal -->
+    <main class="main-grid">
+      <!-- Painel de Controles -->
+      <section class="control-card">
+        <h2 class="section-title">⚙️ Parâmetros da Crise</h2>
+
+        <form id="excuseForm">
+          <!-- 1. Situação -->
+          <div class="form-group">
+            <label class="form-label">1. Situação / Incidente</label>
+            <div class="pills-grid">
+              <div class="pill-option">
+                <input type="radio" name="situation" id="sit_atraso" value="atraso" checked>
+                <label for="sit_atraso" class="pill-label">🕒 Atraso</label>
+              </div>
+              <div class="pill-option">
+                <input type="radio" name="situation" id="sit_trabalho" value="trabalho">
+                <label for="sit_trabalho" class="pill-label">📄 Trabalho / TCC</label>
+              </div>
+              <div class="pill-option">
+                <input type="radio" name="situation" id="sit_esquecimento" value="esquecimento">
+                <label for="sit_esquecimento" class="pill-label">🧠 Esquecimento</label>
+              </div>
+              <div class="pill-option">
+                <input type="radio" name="situation" id="sit_dinheiro" value="dinheiro">
+                <label for="sit_dinheiro" class="pill-label">💸 Falta de Grana</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Alvo / Vítima -->
+          <div class="form-group">
+            <label for="targetSelect" class="form-label">2. Quem vai receber a desculpa?</label>
+            <select id="targetSelect" class="custom-select">
+              <option value="chefe">👔 Chefe / Gestor(a)</option>
+              <option value="professor">🎓 Professor(a) / Orientador</option>
+              <option value="crush">❤️ Crush / Namorado(a)</option>
+              <option value="amigo">🍻 Amigo(a) / Grupo do Rolê</option>
+              <option value="familia">👵 Família / Pais</option>
+              <option value="cobrador">🏦 Cobrador / Credor</option>
+            </select>
+          </div>
+
+          <!-- 3. Tom e Personalidade -->
+          <div class="form-group">
+            <label for="toneSelect" class="form-label">3. Tom de Voz da Mentira</label>
+            <select id="toneSelect" class="custom-select">
+              <option value="corporativo">💼 Corporativo & Polido (Inquestionável)</option>
+              <option value="dramatico">😭 Drama Extremo (O universo me odeia)</option>
+              <option value="tecnico">🤖 Técnico & Jargão Nerd (Ninguém ousa contestar)</option>
+              <option value="minimalista">⚡ Minimalista & Seco (Direto ao ponto)</option>
+              <option value="caradura">🕶️ Cara de Pau Elegante (Carisma puro)</option>
+              <option value="emocional">🥺 Emocional & Arrependido (Coração partido)</option>
+            </select>
+          </div>
+
+          <!-- 4. Nível de Intensidade -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label for="intensityRange" class="form-label" style="margin: 0;">4. Nível de Drama / Ousadia</label>
+              <span id="intensityLabel" class="slider-val">Nível 3 (Equilibrado)</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="intensityRange" min="1" max="5" value="3" step="1">
+            </div>
+          </div>
+
+          <!-- 5. Contexto Adicional -->
+          <div class="form-group">
+            <label for="customContext" class="form-label">5. Detalhe Específico (Opcional)</label>
+            <input type="text" id="customContext" class="custom-input" placeholder="Ex: relatório de vendas, R$ 200, almoço de domingo...">
+          </div>
+
+          <!-- Botões de Ação -->
+          <button type="submit" id="btnGenerate" class="btn-generate">
+            <span>✨</span> Gerar Desculpa Convincente
+          </button>
+          
+          <button type="button" id="btnRoulette" class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 10px;">
+            🎲 Roleta da Salvação (Combinação Surpresa)
+          </button>
+        </form>
+      </section>
+
+      <!-- Painel de Resultados -->
+      <section class="result-card">
+        <!-- Medidor de Eficácia -->
+        <div class="convince-meter-card">
+          <div class="meter-info">
+            <div class="meter-circle" id="meterCircle" style="--percentage: 94;">
+              <span id="meterScore">94%</span>
+            </div>
+            <div class="meter-text">
+              <h4>Convincenteômetro</h4>
+              <p id="meterVerdict">Altíssima probabilidade de colar sem perguntas.</p>
+            </div>
+          </div>
+          <div class="risk-badge" id="riskBadge">
+            🛡️ Risco de Desmascaramento: Baixo
+          </div>
+        </div>
+
+        <!-- Visualizador de WhatsApp -->
+        <div class="wa-container">
+          <div class="wa-header">
+            <div class="wa-contact">
+              <div class="wa-avatar" id="waAvatar">👔</div>
+              <div>
+                <div class="wa-contact-name" id="waContactName">Chefe / Gestor</div>
+                <div class="wa-contact-status">online</div>
+              </div>
+            </div>
+            <div style="color: #8696a0; font-size: 14px;">⋮</div>
+          </div>
+
+          <div class="wa-chat-area">
+            <!-- Balão de Texto -->
+            <div class="wa-bubble">
+              <div class="wa-bubble-content" id="waExcuseText">
+                Bom dia! Peço sinceras desculpas pelo atraso. Tive uma intercorrência logística imprevista decorrente de um vazamento hidráulico no meu prédio. Já estou a caminho, chego em 25 minutos e estou acompanhando tudo pelo celular!
+              </div>
+              <div class="wa-meta">
+                <span id="waTime">09:15</span>
+                <span class="wa-ticks">✓✓</span>
+              </div>
+            </div>
+
+            <!-- Box do Áudio Simulado -->
+            <div class="wa-audio-box">
+              <button id="btnPlayAudio" class="btn-audio-play" title="Ouvir áudio simulado">
+                ▶
+              </button>
+              <div class="wa-waveform" id="waWaveform">
+                <!-- Barrinhas animadas geradas via JS -->
+              </div>
+              <div class="wa-audio-time" id="waAudioDuration">0:18</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de Ação na Desculpa -->
+        <div class="action-buttons-row">
+          <button id="btnCopyMain" class="btn-action highlight">
+            📋 Copiar Mensagem
+          </button>
+          <button id="btnCopyShort" class="btn-action">
+            💬 Versão Curta
+          </button>
+          <button id="btnSendWhatsApp" class="btn-action">
+            🚀 Enviar no Zap
+          </button>
+          <button id="btnOpenEvidence" class="btn-action">
+            🖼️ Gerar Evidência Falsa
+          </button>
+          <button id="btnFavorite" class="btn-action" title="Salvar como favorita">
+            ⭐ Favoritar
+          </button>
+        </div>
+
+        <!-- Abas Táticas -->
+        <div class="tabs-container">
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="tab-rules">🛡️ Checklist Pós-Desculpa</button>
+            <button class="tab-btn" data-tab="tab-script">🎙️ Roteiro de Áudio / Ligação</button>
+            <button class="tab-btn" data-tab="tab-flaws">⚠️ Vulnerabilidades</button>
+          </div>
+
+          <!-- Aba 1: Checklist -->
+          <div id="tab-rules" class="tab-content active">
+            <div class="tactical-box">
+              <ul class="tactical-list" id="tacticalRulesList">
+                <li><span>✅</span> <div><strong>Regra de Ouro:</strong> Chegue guardando o celular e a chave com pressa fingida.</div></li>
+                <li><span>🚫</span> <div><strong>Silêncio nas Redes:</strong> Não poste nada nos Stories do Instagram pelas próximas 6 horas.</div></li>
+                <li><span>🧠</span> <div><strong>Psicologia Reversa:</strong> Agradeça a paciência em vez de ficar repetindo "desculpa".</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Aba 2: Roteiro de Áudio -->
+          <div id="tab-script" class="tab-content">
+            <div class="tactical-box">
+              <p style="font-size: 13px; color: #94a3b8; margin-bottom: 8px;">
+                Se a pessoa te ligar ou pedir áudio, siga exatamente esta interpretação cênica:
+              </p>
+              <div id="audioScriptText" style="font-family: var(--font-mono); font-size: 13px; color: #38bdf8; line-height: 1.6; white-space: pre-wrap;">
+                *[Tom ofegante, barulho de chaves e passos acelerados]* "Oi chefe, já tô correndo, quase chegando aí..."
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba 3: Vulnerabilidades -->
+          <div id="tab-flaws" class="tab-content">
+            <div class="tactical-box">
+              <ul class="tactical-list" id="tacticalFlawsList">
+                <li><span>⚠️</span> <div>Podem abrir o Waze para conferir o trânsito na via relatada.</div></li>
+                <li><span>⚠️</span> <div>Cuidado para não se contradizer se alguém perguntar mais detalhes.</div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="app-footer">
+      <p>DesculpaGPT &copy; 2026 — Inteligência Artificial para Salvar seu Emprego, Namoro e Amizades.</p>
+      <p style="margin-top: 6px; font-size: 11px; color: #475569;">
+        Aviso de Responsabilidade: Use com moderação. O autor não se responsabiliza por demissões, términos ou expulsões de repúblicas.
+      </p>
+    </footer>
+  </div>
+
+  <!-- Modal de Evidência Falsa -->
+  <div id="evidenceModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🖼️ Gerador de Evidências Convincentes</h3>
+        <button id="btnCloseModal" class="btn-close-modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap;">
+          <button class="btn-secondary evidence-type-btn active" data-type="corrupted_file">📁 Arquivo Corrompido</button>
+          <button class="btn-secondary evidence-type-btn" data-type="traffic">🚗 Waze / Trânsito</button>
+          <button class="btn-secondary evidence-type-btn" data-type="bank_alert">🏦 Alerta de Banco</button>
+          <button class="btn-secondary evidence-type-btn" data-type="windows_update">🔄 Windows Update 99%</button>
+        </div>
+
+        <div class="evidence-canvas-container">
+          <canvas id="evidenceCanvas" width="700" height="400"></canvas>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btnDownloadEvidence" class="btn-generate" style="width: auto; padding: 10px 20px; font-size: 14px;">
+          ⬇️ Baixar Imagem (PNG)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Histórico -->
+  <div id="historyModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>📜 Histórico de Desculpas Utilizadas</h3>
+        <button id="btnCloseHistoryModal" class="btn-close-modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div id="historyContainer" class="history-list" style="width: 100%;">
+          <!-- Itens do histórico inseridos dinamicamente -->
+        </div>
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button id="btnClearHistory" class="btn-secondary" style="color: #ef4444;">
+          🗑️ Limpar Histórico
+        </button>
+        <button id="btnCloseHistory" class="btn-secondary">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast">
+    <span id="toastIcon">📋</span>
+    <span id="toastMessage">Desculpa copiada com sucesso!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/generator.js"></script>
+  <script src="js/evidences.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
